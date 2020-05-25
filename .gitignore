@@ -1,0 +1,10 @@
+.ipynb_checkpoints
+data/
+__pycache__
+KR*
+tempo/
+*.bin
+.DS_Store
+qualitative/
+outputs/
+*.ipynb
