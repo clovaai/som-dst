@@ -93,6 +93,14 @@ taxi 0.5903426791277259 0.9803219106957396
 
 ```
 
+### Main results on MultiWOZ dataset (Joint Goal Accuracy)
+
+
+|Model        |MultiWOZ 2.0 |MultWOZ 2.1|
+|-------------|------------|------------|
+|SOM-DST Base | 51.72      | 53.01      |
+|SOM-DST Large| 52.32      | 53.68      |
+
 
 ## Citation
 
