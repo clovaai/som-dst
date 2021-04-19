@@ -4,24 +4,23 @@ Copyright (c) 2020-present NAVER Corp.
 MIT license
 """
 
-from model import SomDST
-from pytorch_transformers import BertTokenizer, AdamW, WarmupLinearSchedule, BertConfig
-from utils.data_utils import prepare_dataset, MultiWozDataset
-from utils.data_utils import make_slot_meta, domain2id, OP_SET, make_turn_label, postprocessing
-from utils.eval_utils import compute_prf, compute_acc, per_domain_join_accuracy
-from utils.ckpt_utils import download_ckpt, convert_ckpt_compatible
-from evaluation import model_evaluation
+import argparse
+import json
+import os
+import random
 
+import numpy as np
 import torch
 import torch.nn as nn
-from torch.utils.data import TensorDataset, DataLoader, RandomSampler, SequentialSampler
-import numpy as np
-import argparse
-import random
-import os
-import json
-import time
+from torch.utils.data import DataLoader, RandomSampler
+from transformers import BertTokenizer, AdamW, BertConfig
+from transformers.optimization import get_linear_schedule_with_warmup
 
+from evaluation import model_evaluation
+from model import SomDST
+from utils.ckpt_utils import download_ckpt
+from utils.data_utils import make_slot_meta, domain2id, OP_SET
+from utils.data_utils import prepare_dataset, MultiWozDataset
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
@@ -127,13 +126,13 @@ def main(args):
         ]
 
     enc_optimizer = AdamW(enc_optimizer_grouped_parameters, lr=args.enc_lr)
-    enc_scheduler = WarmupLinearSchedule(enc_optimizer, int(num_train_steps * args.enc_warmup),
-                                         t_total=num_train_steps)
+    enc_scheduler = get_linear_schedule_with_warmup(enc_optimizer, int(num_train_steps * args.enc_warmup),
+                                                    t_total=num_train_steps)
 
     dec_param_optimizer = list(model.decoder.parameters())
     dec_optimizer = AdamW(dec_param_optimizer, lr=args.dec_lr)
-    dec_scheduler = WarmupLinearSchedule(dec_optimizer, int(num_train_steps * args.dec_warmup),
-                                         t_total=num_train_steps)
+    dec_scheduler = get_linear_schedule_with_warmup(dec_optimizer, int(num_train_steps * args.dec_warmup),
+                                                    t_total=num_train_steps)
 
     if n_gpu > 1:
         model = torch.nn.DataParallel(model)

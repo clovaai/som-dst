@@ -7,7 +7,7 @@ MIT license
 from utils.data_utils import prepare_dataset, MultiWozDataset
 from utils.data_utils import make_slot_meta, domain2id, OP_SET, make_turn_label, postprocessing
 from utils.eval_utils import compute_prf, compute_acc, per_domain_join_accuracy
-from pytorch_transformers import BertTokenizer, BertConfig
+from transformers import BertTokenizer, BertConfig
 
 from model import SomDST
 import torch.nn as nn

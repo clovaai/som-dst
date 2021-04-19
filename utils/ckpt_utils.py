@@ -1,7 +1,7 @@
 import wget
 import os
 import torch
-from pytorch_transformers import BertForPreTraining, BertConfig
+from transformers import BertForPreTraining, BertConfig
 
 
 BERT_PRETRAINED_MODEL_ARCHIVE_MAP = {

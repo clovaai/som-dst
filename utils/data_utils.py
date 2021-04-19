@@ -154,7 +154,7 @@ def prepare_dataset(data_path, tokenizer, slot_meta,
             domain_counter[domain] += 1
 
         dialog_history = []
-        last_dialog_state = {}
+        previous_dialog_state = {}  # previous dialog_state
         last_uttr = ""
         for ti, turn in enumerate(dial_dict["dialogue"]):
             turn_domain = turn["domain"]
@@ -166,7 +166,7 @@ def prepare_dataset(data_path, tokenizer, slot_meta,
             turn_dialog_state = fix_general_label_error(turn["belief_state"], False, slot_meta)
             last_uttr = turn_uttr
 
-            op_labels, generate_y, gold_state = make_turn_label(slot_meta, last_dialog_state,
+            op_labels, generate_y, gold_state = make_turn_label(slot_meta, previous_dialog_state,
                                                                 turn_dialog_state,
                                                                 tokenizer, op_code)
             if (ti + 1) == len(dial_dict["dialogue"]):
@@ -176,12 +176,12 @@ def prepare_dataset(data_path, tokenizer, slot_meta,
 
             instance = TrainingInstance(dial_dict["dialogue_idx"], turn_domain,
                                         turn_id, turn_uttr, ' '.join(dialog_history[-n_history:]),
-                                        last_dialog_state, op_labels,
+                                        previous_dialog_state, op_labels,
                                         generate_y, gold_state, max_seq_length, slot_meta,
                                         is_last_turn, op_code=op_code)
             instance.make_instance(tokenizer)
             data.append(instance)
-            last_dialog_state = turn_dialog_state
+            previous_dialog_state = turn_dialog_state
     return data
 
 

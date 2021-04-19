@@ -6,7 +6,7 @@ MIT license
 
 import torch
 import torch.nn as nn
-from pytorch_transformers.modeling_bert import BertPreTrainedModel, BertModel
+from transformers import BertPreTrainedModel, BertModel
 
 
 class SomDST(BertPreTrainedModel):
