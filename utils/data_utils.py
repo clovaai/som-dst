@@ -253,16 +253,16 @@ class TrainingInstance:
                 t = tokenizer.tokenize(' '.join(k))
                 t.extend(['-', '[NULL]'])
             state.extend(t)
-        avail_length_1 = max_seq_length - len(state) - 3
+        avail_length_1 = max_seq_length - len(state) - 3    # 1 * CLS + 2 * SEP
         diag_1 = tokenizer.tokenize(self.dialog_history)
         diag_2 = tokenizer.tokenize(self.turn_utter)
         avail_length = avail_length_1 - len(diag_2)
 
-        if len(diag_1) > avail_length:  # truncated
+        if len(diag_1) > avail_length:  # truncates diag_1 (dialog_history)
             avail_length = len(diag_1) - avail_length
             diag_1 = diag_1[avail_length:]
 
-        if len(diag_1) == 0 and len(diag_2) > avail_length_1:
+        if len(diag_1) == 0 and len(diag_2) > avail_length_1:   # truncates diag_2 (turn_utter)
             avail_length = len(diag_2) - avail_length_1
             diag_2 = diag_2[avail_length:]
 
@@ -277,6 +277,7 @@ class TrainingInstance:
             drop_mask = np.array(drop_mask)
             word_drop = np.random.binomial(drop_mask.astype('int64'), word_dropout)
             diag = [w if word_drop[i] == 0 else '[UNK]' for i, w in enumerate(diag)]
+
         input_ = diag + state
         segment = segment + [1]*len(state)
         self.input_ = input_
@@ -284,7 +285,7 @@ class TrainingInstance:
         self.segment_id = segment
         slot_position = []
         for i, t in enumerate(self.input_):
-            if t == slot_token:
+            if t == slot_token:     # delimiter "[SLOT]"
                 slot_position.append(i)
         self.slot_position = slot_position
 
@@ -292,6 +293,8 @@ class TrainingInstance:
         self.input_id = tokenizer.convert_tokens_to_ids(self.input_)
         if len(input_mask) < max_seq_length:
             self.input_id = self.input_id + [0] * (max_seq_length-len(input_mask))
+
+            # 000 (history), 11111 (turn_utter), 00000 (mask)
             self.segment_id = self.segment_id + [0] * (max_seq_length-len(input_mask))
             input_mask = input_mask + [0] * (max_seq_length-len(input_mask))
 
