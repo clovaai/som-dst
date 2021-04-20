@@ -108,7 +108,7 @@ def main(args):
         args.bert_ckpt_path = download_ckpt(args.bert_ckpt_path, args.bert_config_path, 'assets')
 
     ckpt = torch.load(args.bert_ckpt_path, map_location='cpu')
-    model.encoder.bert.load_state_dict(ckpt)
+    model.encoder.bert.load_state_dict(ckpt, strict=False)
 
     # re-initialize added special tokens ([SLOT], [NULL], [EOS])
     model.encoder.bert.embeddings.word_embeddings.weight.data[1].normal_(mean=0.0, std=0.02)
