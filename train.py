@@ -126,13 +126,15 @@ def main(args):
         ]
 
     enc_optimizer = AdamW(enc_optimizer_grouped_parameters, lr=args.enc_lr)
-    enc_scheduler = get_linear_schedule_with_warmup(enc_optimizer, int(num_train_steps * args.enc_warmup),
-                                                    t_total=num_train_steps)
+    enc_scheduler = get_linear_schedule_with_warmup(enc_optimizer,
+                                                    num_warmup_steps=int(num_train_steps * args.enc_warmup),
+                                                    num_training_steps=num_train_steps)
 
     dec_param_optimizer = list(model.decoder.parameters())
     dec_optimizer = AdamW(dec_param_optimizer, lr=args.dec_lr)
-    dec_scheduler = get_linear_schedule_with_warmup(dec_optimizer, int(num_train_steps * args.dec_warmup),
-                                                    t_total=num_train_steps)
+    dec_scheduler = get_linear_schedule_with_warmup(dec_optimizer,
+                                                    num_warmup_steps=int(num_train_steps * args.dec_warmup),
+                                                    num_training_steps=num_train_steps)
 
     if n_gpu > 1:
         model = torch.nn.DataParallel(model)
