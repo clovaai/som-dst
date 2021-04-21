@@ -8,3 +8,5 @@ tempo/
 qualitative/
 outputs/
 *.ipynb
+raw_data/
+.idea/

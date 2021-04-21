@@ -1,7 +1,7 @@
 import wget
 import os
 import torch
-from pytorch_transformers import BertForPreTraining, BertConfig
+from transformers import BertForPreTraining, BertConfig
 
 
 BERT_PRETRAINED_MODEL_ARCHIVE_MAP = {
@@ -40,7 +40,7 @@ def convert_ckpt_compatible(ckpt_path, config_path):
 
     model_config = BertConfig.from_json_file(config_path)
     model = BertForPreTraining(model_config)
-    model.load_state_dict(ckpt)
+    model.load_state_dict(ckpt, strict=False)
     new_ckpt = model.bert.state_dict()
 
     return new_ckpt

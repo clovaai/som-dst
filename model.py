@@ -6,7 +6,7 @@ MIT license
 
 import torch
 import torch.nn as nn
-from pytorch_transformers.modeling_bert import BertPreTrainedModel, BertModel
+from transformers import BertPreTrainedModel, BertModel
 
 
 class SomDST(BertPreTrainedModel):
@@ -15,7 +15,8 @@ class SomDST(BertPreTrainedModel):
         self.hidden_size = config.hidden_size
         self.encoder = Encoder(config, n_op, n_domain, update_id, exclude_domain)
         self.decoder = Decoder(config, self.encoder.bert.embeddings.word_embeddings.weight)
-        self.apply(self.init_weights)
+        # self.apply(self.init_weights)
+        self.init_weights()
 
     def forward(self, input_ids, token_type_ids,
                 state_positions, attention_mask,
