@@ -1,5 +1,36 @@
 # SOM-DST
 
+Convert code pytorch-transformers to huggingface transformers 
+
+```
+# Fixed Requirements
+
+# pip install torch==1.7.1+cu110 -f https://download.pytorch.org/whl/torch_stable.html
+torch==1.7.1+cu110
+transformers==3.0.2
+wget==3.2
+jsonlines
+tqdm
+```
+
+```
+# 동일한 Parameter setting (MW 2.1) 성능 소폭 감소 (0.5309 -> 0.5275)
+------------------------------
+op_code: 4, is_gt_op: False, is_gt_p_state: False, is_gt_gen: False
+Epoch 0 joint accuracy :  0.5275515743756786
+Epoch 0 slot turn accuracy :  0.9732401375316211
+Epoch 0 slot turn F1:  0.9175307139165523
+Epoch 0 op accuracy :  0.9737830256966589
+Epoch 0 op F1 :  {'delete': 0.018656716417910446, 'update': 0.8015826338020638, 'dontcare': 0.3235668789808917, 'carryover': 0.9862940159245958}
+Epoch 0 op hit count :  {'delete': 15, 'update': 7496, 'dontcare': 127, 'carryover': 207607}
+Epoch 0 op all count :  {'delete': 1576, 'update': 10595, 'dontcare': 581, 'carryover': 208288}
+Final Joint Accuracy :  0.3713713713713714
+Final slot turn F1 :  0.9101975987924662
+Latency Per Prediction : 24.244383 ms
+-----------------------------
+```
+
+## The original readme.md is as follows 
 
 This code is the official pytorch implementation of [Efficient Dialogue State Tracking by Selectively Overwriting Memory](https://arxiv.org/abs/1911.03906).<br>
 > [Sungdong Kim](https://github.com/dsksd), [Sohee Yang](https://github.com/soheeyang), [Gyuwan Kim](mailto:gyuwan.kim@navercorp.com), [Sang-woo Lee](https://scholar.google.co.kr/citations?user=TMTTMuQAAAAJ)<br>
@@ -96,10 +127,10 @@ taxi 0.5903426791277259 0.9803219106957396
 ### Main results on MultiWOZ dataset (Joint Goal Accuracy)
 
 
-|Model        |MultiWOZ 2.0 |MultWOZ 2.1|
-|-------------|------------|------------|
-|SOM-DST Base | 51.72      | 53.01      |
-|SOM-DST Large| 52.32      | 53.68      |
+| Model         | MultiWOZ 2.0 | MultWOZ 2.1 |
+| ------------- | ------------ | ----------- |
+| SOM-DST Base  | 51.72        | 53.01       |
+| SOM-DST Large | 52.32        | 53.68       |
 
 
 ## Citation
