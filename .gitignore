@@ -1,5 +1,6 @@
 .ipynb_checkpoints
 data/
+model/
 __pycache__
 KR*
 tempo/
@@ -8,3 +9,5 @@ tempo/
 qualitative/
 outputs/
 *.ipynb
+
+*.json
