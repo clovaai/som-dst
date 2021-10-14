@@ -1,8 +1,5 @@
 .ipynb_checkpoints
 data/
-data_2.4/
-dataset/
-model_2.4/
 model/
 __pycache__
 KR*
